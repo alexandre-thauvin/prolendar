@@ -1,9 +1,5 @@
 package com.prolendar.thauvi_a.prolendar;
 
-/**
- * Created by thauvi_a on 11/8/17.
- */
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,10 +17,8 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-/**
- * Activity to demonstrate basic retrieval of the Google user's ID, email address, and basic
- * profile.
- */
+
+
 public class SignInActivity extends AppCompatActivity implements
         View.OnClickListener {
 
@@ -88,23 +82,17 @@ public class SignInActivity extends AppCompatActivity implements
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        // [START_EXCLUDE]
                         updateUI(null);
-                        // [END_EXCLUDE]
                     }
                 });
     }
-    // [END signOut]
 
-    // [START revokeAccess]
     private void revokeAccess() {
         mGoogleSignInClient.revokeAccess()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        // [START_EXCLUDE]
                         updateUI(null);
-                        // [END_EXCLUDE]
                     }
                 });
     }
