@@ -1,10 +1,16 @@
 <resources>
     <string name="app_name">Prolendar</string>
     <string name="server_client_id">307043464216-lcui2gmh41h81brkt2jh757cqrmrmblr.apps.googleusercontent.com</string>
+    <string name="next_page">Click here to access next page</string>
+
+    <!-- SignIn Activity -->
     <string name="signed_in_fmt">Signed in as: %s</string>
     <string name="signed_in">Signed in</string>
     <string name="signing_in">Signing in…</string>
     <string name="signed_out">Signed out</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="done">Done</string>
     <string name="signed_in_err">"Error: please check logs."</string>
     <string name="error_null_person">
         Error: Plus.PeopleApi.getCurrentPerson returned null. Ensure that the Google+ API is
@@ -12,10 +18,22 @@
         and that your device has an internet connection.
     </string>
     <string name="loading">Loading…</string>
-    <string name="name_sign_in_activity">SignInActivity</string>
+    <string name="signin_activity">SignInActivity</string>
+
+    <!-- Calendar Activity -->
+    <string name="calendar_activity">CalendarActivity</string>
     <string name="auth_code_fmt">Auth Code: %s</string>
     <string name="id_token_fmt">ID Token: %s</string>
-    <string name="sign_out">Sign Out</string>
-    <string name="disconnect">Disconnect</string>
-    <string name="next_page">Click here to access next page</string>
+    <string name="create">Create and check event</string>
+    <string name="no_network">No network connection available.</string>
+    <string name="need_google_service">This app requires Google Play Services. Please install " +
+                                    "Google Play Services on your device and relaunch this app.
+    </string>
+    <string name="no_result">No results returned.</string>
+    <string name="request_cancel">Request cancelled.</string>
+    <string name="error_occur">The following error occurred:</string>
+
+    <!-- Form Activity -->
+    <string name="form_activity">FormActivity</string>
+
 </resources>

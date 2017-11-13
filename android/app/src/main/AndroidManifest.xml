@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.prolendar.thauvi_a.prolendar">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,7 +24,17 @@
         </activity>
         <activity
             android:name="com.prolendar.thauvi_a.prolendar.SignInActivity"
-            android:label="@string/name_sign_in_activity"
+            android:label="@string/signin_activity"
+            android:theme="@style/AppTheme">
+        </activity>
+        <activity
+            android:name="com.prolendar.thauvi_a.prolendar.CalendarActivity"
+            android:label="@string/calendar_activity"
+            android:theme="@style/AppTheme">
+        </activity>
+        <activity
+            android:name="com.prolendar.thauvi_a.prolendar.FormActivity"
+            android:label="@string/form_activity"
             android:theme="@style/AppTheme">
         </activity>
     </application>

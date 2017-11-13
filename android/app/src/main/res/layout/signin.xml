@@ -13,7 +13,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
 
-    <Button
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/sign_out_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,6 +35,16 @@
         android:layout_toEndOf="@+id/status"
         android:onClick="onClick"
         android:text="@string/disconnect"
+        android:theme="@style/ThemeOverlay.MyDarkButton" />
+
+    <Button
+        android:id="@+id/done_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/sign_in_button"
+        android:layout_alignParentBottom="true"
+        android:onClick="toCalendar"
+        android:text="@string/done"
         android:theme="@style/ThemeOverlay.MyDarkButton" />
 
 
