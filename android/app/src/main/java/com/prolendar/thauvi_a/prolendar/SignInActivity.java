@@ -31,19 +31,18 @@ public class SignInActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.signin);
-        mStatusTextView = findViewById(R.id.status);
+        setContentView(R.layout.signin2);
+        setTitle(R.string.app_name);
+        mStatusTextView = findViewById(R.id.email);
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .requestId()
                 .requestProfile()
                 .build();
-
+        findViewById(R.id.sign_out_button).setVisibility(View.GONE);
+        findViewById(R.id.done).setVisibility(View.GONE);
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        SignInButton signInButton = findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_STANDARD);
-        signInButton.setColorScheme(SignInButton.COLOR_LIGHT);
     }
 
     @Override
@@ -87,29 +86,21 @@ public class SignInActivity extends AppCompatActivity implements
                 });
     }
 
-    private void revokeAccess() {
-        mGoogleSignInClient.revokeAccess()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        updateUI(null);
-                    }
-                });
-    }
-
     private void updateUI(@Nullable GoogleSignInAccount account) {
         if (account != null) {
-            mStatusTextView.setText(getString(R.string.signed_in_fmt, account.getDisplayName()));
+            mStatusTextView.setText(account.getEmail());
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+            findViewById(R.id.signin).setVisibility(View.GONE);
             findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);
-            findViewById(R.id.disconnect_button).setVisibility(View.VISIBLE);
+            findViewById(R.id.done).setVisibility(View.VISIBLE);
 
         } else {
-            mStatusTextView.setText(R.string.signed_out);
+            mStatusTextView.setText(R.string.email);
 
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
+            findViewById(R.id.signin).setVisibility(View.VISIBLE);
             findViewById(R.id.sign_out_button).setVisibility(View.GONE);
-            findViewById(R.id.disconnect_button).setVisibility(View.GONE);
+            findViewById(R.id.done).setVisibility(View.GONE);
         }
     }
 
@@ -121,9 +112,6 @@ public class SignInActivity extends AppCompatActivity implements
                 break;
             case R.id.sign_out_button:
                 signOut();
-                break;
-            case R.id.disconnect_button:
-                revokeAccess();
                 break;
         }
     }

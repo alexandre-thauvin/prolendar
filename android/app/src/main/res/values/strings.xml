@@ -1,15 +1,20 @@
 <resources>
     <string name="app_name">Prolendar</string>
     <string name="server_client_id">307043464216-lcui2gmh41h81brkt2jh757cqrmrmblr.apps.googleusercontent.com</string>
+    <string name="welcome">Welcome back</string>
     <string name="next_page">Click here to access next page</string>
 
     <!-- SignIn Activity -->
+    <string name="password">Password</string>
+    <string name="account">Create account</string>
+    <string name="email">E-mail</string>
     <string name="signed_in_fmt">Signed in as: %s</string>
     <string name="signed_in">Signed in</string>
     <string name="signing_in">Signing in…</string>
     <string name="signed_out">Signed out</string>
     <string name="sign_out">Sign Out</string>
     <string name="disconnect">Disconnect</string>
+    <string name="signin">Sign in</string>
     <string name="done">Done</string>
     <string name="signed_in_err">"Error: please check logs."</string>
     <string name="error_null_person">
