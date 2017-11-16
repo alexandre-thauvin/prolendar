@@ -91,10 +91,13 @@
             android:layout_marginRight="40dp"
             android:layout_marginTop="80dp"
             android:background="@drawable/rounded"
+            android:focusable="true"
+            android:clickable="true"
+            android:onClick="toCalendar"
             android:gravity="center"
             android:letterSpacing="0.1"
             android:padding="17dp"
-            android:text="@string/signin"
+            android:text="Calendar"
             android:textColor="#ececf1"
             android:textSize="14sp" />
 
@@ -104,7 +107,7 @@
             android:layout_height="wrap_content"
             android:focusable="true"
             android:clickable="true"
-            android:onClick="toCalendar"
+            android:onClick="toForm"
             android:text="@string/done"
             android:textSize="14sp"
             android:letterSpacing="0.1"

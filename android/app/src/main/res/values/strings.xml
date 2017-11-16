@@ -1,9 +1,8 @@
 <resources>
     <string name="app_name">Prolendar</string>
-    <string name="server_client_id">307043464216-lcui2gmh41h81brkt2jh757cqrmrmblr.apps.googleusercontent.com</string>
     <string name="welcome">Welcome back</string>
     <string name="next_page">Click here to access next page</string>
-
+    <string name="id_client">307043464216-gmflaeo1e2abjvg9t08p1a8k5piu40g0.apps.googleusercontent.com</string>
     <!-- SignIn Activity -->
     <string name="password">Password</string>
     <string name="account">Create account</string>
