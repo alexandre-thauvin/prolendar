@@ -21,18 +21,23 @@ import com.google.api.services.calendar.model.*;
 import android.Manifest;
 import android.accounts.AccountManager;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Application;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -75,8 +80,6 @@ public class CalendarActivity extends Activity
                 .setBackOff(new ExponentialBackOff());
     }
 
-
-
     private void getResultsFromApi() {
         if (! isGooglePlayServicesAvailable()) {
             acquireGooglePlayServices();
@@ -85,7 +88,7 @@ public class CalendarActivity extends Activity
         } else if (! isDeviceOnline()) {
             mOutputText.setText(getString(R.string.no_network));
         } else {
-            new MakeRequestTask(mCredential).execute();
+            new MakeRequestTask(mCredential, this).execute();
         }
     }
 
@@ -104,6 +107,7 @@ public class CalendarActivity extends Activity
                         REQUEST_ACCOUNT_PICKER);
             }
         } else {
+
             EasyPermissions.requestPermissions(
                     this,
                     "This app needs to access your Google account (via Contacts).",
@@ -205,10 +209,12 @@ public class CalendarActivity extends Activity
     private class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
         private com.google.api.services.calendar.Calendar mService = null;
         private Exception mLastError = null;
+        private Context context;
 
-        MakeRequestTask(GoogleAccountCredential credential) {
+        MakeRequestTask(GoogleAccountCredential credential, Context context) {
             HttpTransport transport = AndroidHttp.newCompatibleTransport();
             JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+            this.context = context;
             mService = new com.google.api.services.calendar.Calendar.Builder(
                     transport, jsonFactory, credential)
                     .setApplicationName("Prolendar")
@@ -265,6 +271,26 @@ public class CalendarActivity extends Activity
                 output.add(0, "Data retrieved using the Google Calendar API:");
                 mOutputText.setText(TextUtils.join("\n", output));
             }
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(this.context, android.R.style.Theme_Material_Dialog_Alert);
+            } else {
+                builder = new AlertDialog.Builder(this.context);
+            }
+            builder.setTitle("Event created")
+                    .setMessage("Event added on Google Calendar")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert);
+            AlertDialog dial;
+            dial = builder.create();
+            dial.show();
         }
 
         @Override
@@ -303,25 +329,6 @@ public class CalendarActivity extends Activity
                     .setDateTime(endDateTime)
                     .setTimeZone("Europe/Paris");
             event.setEnd(end);
-
-        /*String[] recurrence = new String[] {"RRULE:FREQ=DAILY;COUNT=2"};
-        event.setRecurrence(Arrays.asList(recurrence));
-
-        EventAttendee[] attendees = new EventAttendee[] {
-                new EventAttendee().setEmail("lpage@example.com"),
-                new EventAttendee().setEmail("sbrin@example.com"),
-        };
-        event.setAttendees(Arrays.asList(attendees));
-
-        EventReminder[] reminderOverrides = new EventReminder[] {
-                new EventReminder().setMethod("email").setMinutes(24 * 60),
-                new EventReminder().setMethod("popup").setMinutes(10),
-        };
-        Event.Reminders reminders = new Event.Reminders()
-                .setUseDefault(false)
-                .setOverrides(Arrays.asList(reminderOverrides));
-        event.setReminders(reminders);*/
-
             String calendarId = "primary";
 
             try {
@@ -331,7 +338,7 @@ public class CalendarActivity extends Activity
             {
                 System.out.printf(e.getMessage());
             }
-            System.out.printf("Event created: %s\n", event.getHtmlLink());
+            Log.d("MakeRequestTask", "passe ici\n");
         }
     }
 

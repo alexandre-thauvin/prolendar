@@ -36,8 +36,10 @@
     <string name="no_result">No results returned.</string>
     <string name="request_cancel">Request cancelled.</string>
     <string name="error_occur">The following error occurred:</string>
-
+    <string name="need_contact">Prolendar need that you allow the contact section</string>
     <!-- Form Activity -->
     <string name="form_activity">FormActivity</string>
+    <string name="job">Select the job</string>
+    <string name="formule">Select the formule</string>
 
 </resources>

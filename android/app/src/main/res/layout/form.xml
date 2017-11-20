@@ -24,6 +24,26 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <ImageView
+                android:id="@+id/ic"
+                android:layout_width="77dp"
+                android:layout_height="73dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/ic_launcher" />
+
+            <com.prolendar.thauvi_a.prolendar.MyTextView
+                android:id="@+id/select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:text="@string/job"
+                android:gravity="center"
+                android:textColor="#8E8E9A"
+                android:textSize="30sp"
+                android:letterSpacing="0.1"
+                android:layout_marginTop="12dp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0.001dp"
@@ -47,13 +67,26 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"/>
-            <ImageView
-                android:id="@+id/ic"
-                android:layout_width="77dp"
-                android:layout_height="73dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/ic_launcher" />
+
+            <com.prolendar.thauvi_a.prolendar.MyTextView
+                android:id="@+id/done"
+                android:layout_width="275dp"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:clickable="true"
+                android:onClick="onClick"
+                android:text="@string/done"
+                android:textSize="14sp"
+                android:letterSpacing="0.1"
+                android:textColor="#ececf1"
+                android:background="@drawable/rounded"
+                android:gravity="center"
+                android:padding="17dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="100dp"/>
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -64,7 +97,7 @@
                 <Spinner
                     android:id="@+id/spinner"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="80dp"
                     android:layout_marginLeft="40dp"
                     android:layout_marginRight="40dp"
                     android:background="@drawable/rounded"
@@ -73,6 +106,7 @@
                     android:letterSpacing="0.1"
                     android:textColor="#ececf1"
                     android:textSize="16sp"
+                    android:spinnerMode="dropdown"
                     android:popupBackground="#BD071D"
                     android:layout_weight="1" />
 

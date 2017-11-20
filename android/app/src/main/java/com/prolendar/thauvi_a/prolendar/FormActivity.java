@@ -1,12 +1,25 @@
 package com.prolendar.thauvi_a.prolendar;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by thauvi_a on 11/13/17.
@@ -17,36 +30,109 @@ import java.util.List;
  *
  */
 
-public class FormActivity extends Activity {
+public class FormActivity extends Activity implements
+        View.OnClickListener {
+        private String job;
+        private String formule;
+        private enum    Step {
+            JOB,
+            FORMULE
+        }
+        private Step step;
+        private FirebaseDatabase database = FirebaseDatabase.getInstance();
+        private final DatabaseReference myRef = database.getReference("job");
+        private final List<String> exp = new ArrayList<>();
+        private Spinner spinner;
 
-        Spinner spinner;
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-
+            step = step.JOB;
             setContentView(R.layout.form);
-
-            //Récupération du Spinner déclaré dans le fichier main.xml de res/layout
+            findViewById(R.id.done).setOnClickListener(this);
             spinner = findViewById(R.id.spinner);
-            //Création d'une liste d'élément à mettre dans le Spinner(pour l'exemple)
-            List<String> exp = new ArrayList<>();
-            exp.add("Coiffeur(se) ");
-            exp.add("Infirmier(e)");
-
-		/*Le Spinner a besoin d'un adapter pour sa presentation alors on lui passe le context(this) et
-                un fichier de presentation par défaut( android.R.layout.simple_spinner_item)
-		Avec la liste des elements (exemple) */
-            ArrayAdapter adapter = new ArrayAdapter(
+            final ArrayAdapter adapter = new ArrayAdapter(
                     this,
                     android.R.layout.simple_spinner_item,
                     exp
             );
+            final ProgressDialog progressDialog = ProgressDialog.show(this, "", "Please wait...");
+            new Thread() {
+                public void run() {
+                    try{
+                        myRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
+                                    String name = messageSnapshot.child("").getKey();
+                                    exp.add(name);
+                                }
+                                adapter.notifyDataSetChanged();
+                            }
 
-
-               /* On definit une présentation du spinner quand il est déroulé         (android.R.layout.simple_spinner_dropdown_item) */
+                            @Override
+                            public void onCancelled(DatabaseError error) {
+                                Log.w(TAG, "Failed to read value.", error.toException());
+                            }
+                        });
+                    }
+                    catch (Exception e) {
+                        Log.e("FormActivity", e.getMessage());
+                    }
+                    progressDialog.dismiss();
+                }
+            }.start();
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            //Enfin on passe l'adapter au Spinner et c'est tout
             spinner.setAdapter(adapter);
 
+        }
+
+        @Override
+        public void onClick(View v)
+        {
+            if (this.step == step.JOB) {
+                job = spinner.getSelectedItem().toString();
+            }
+            else
+                formule = spinner.getSelectedItem().toString();
+            updateUI();
+        }
+
+        public void updateUI()
+        {
+            if (this.step == step.JOB) {
+                final ArrayAdapter adapter = new ArrayAdapter(
+                        this,
+                        R.layout.multiline_spinner_dropdown_item,
+                        exp
+                );
+                exp.clear();
+                myRef.child(job).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                            String value = dataSnapshot.getValue().toString();
+                            value = value.replaceAll("\\{", "").replaceAll("\\}","");
+                            String tab[] = value.split(", ");
+                            for (String stl : tab) {
+                                exp.add(stl);
+                            }
+                        adapter.setDropDownViewResource(R.layout.multiline_spinner_dropdown_item);
+                        spinner.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                        step = step.FORMULE;
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w(TAG, "Failed to read value.", databaseError.toException());
+                    }
+                });
+                TextView tv = findViewById(R.id.select);
+                tv.setText(getString(R.string.formule));
+            }
+            else
+            {
+                //todo: new activity/layout
+            }
         }
 }
