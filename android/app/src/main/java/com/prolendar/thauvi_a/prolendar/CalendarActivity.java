@@ -22,7 +22,6 @@ import android.Manifest;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Application;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -37,7 +36,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -78,6 +76,8 @@ public class CalendarActivity extends Activity
         mCredential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
+        String toto = mCredential.getSelectedAccountName();
+        System.out.println(toto);
     }
 
     private void getResultsFromApi() {
@@ -318,13 +318,13 @@ public class CalendarActivity extends Activity
                     .setSummary("RDV piqure")
                     .setLocation("50 Bis Rue lagrange, 33000 Bordeaux, France");
 
-            DateTime startDateTime = new DateTime("2017-11-12T10:00:00+01:00");
+            DateTime startDateTime = new DateTime("2017-11-25T10:00:00+01:00");
             EventDateTime start = new EventDateTime()
                     .setDateTime(startDateTime)
                     .setTimeZone("Europe/Paris");
             event.setStart(start);
 
-            DateTime endDateTime = new DateTime("2017-11-12T10:20:00+01:00");
+            DateTime endDateTime = new DateTime("2017-11-25T10:20:00+01:00");
             EventDateTime end = new EventDateTime()
                     .setDateTime(endDateTime)
                     .setTimeZone("Europe/Paris");
@@ -338,7 +338,6 @@ public class CalendarActivity extends Activity
             {
                 System.out.printf(e.getMessage());
             }
-            Log.d("MakeRequestTask", "passe ici\n");
         }
     }
 

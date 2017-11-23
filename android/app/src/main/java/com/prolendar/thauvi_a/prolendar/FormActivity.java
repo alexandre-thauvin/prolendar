@@ -1,11 +1,13 @@
 package com.prolendar.thauvi_a.prolendar;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -36,7 +38,8 @@ public class FormActivity extends Activity implements
         private String formule;
         private enum    Step {
             JOB,
-            FORMULE
+            FORMULE,
+            ARTISAN
         }
         private Step step;
         private FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -53,7 +56,7 @@ public class FormActivity extends Activity implements
             spinner = findViewById(R.id.spinner);
             final ArrayAdapter adapter = new ArrayAdapter(
                     this,
-                    android.R.layout.simple_spinner_item,
+                    R.layout.multiline_spinner_dropdown_item,
                     exp
             );
             final ProgressDialog progressDialog = ProgressDialog.show(this, "", "Please wait...");
@@ -92,10 +95,14 @@ public class FormActivity extends Activity implements
         {
             if (this.step == step.JOB) {
                 job = spinner.getSelectedItem().toString();
+                updateUI();
+                this.step = step.JOB;
             }
-            else
+            else {
                 formule = spinner.getSelectedItem().toString();
-            updateUI();
+                updateUI();
+                this.step = step.FORMULE;
+            }
         }
 
         public void updateUI()
@@ -130,9 +137,13 @@ public class FormActivity extends Activity implements
                 TextView tv = findViewById(R.id.select);
                 tv.setText(getString(R.string.formule));
             }
+            else if (this.step == Step.FORMULE)
+            {
+
+            }
             else
             {
-                //todo: new activity/layout
+                //todo: new activity => appointment
             }
         }
 }
