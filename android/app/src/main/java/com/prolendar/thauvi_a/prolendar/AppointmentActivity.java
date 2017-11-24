@@ -31,6 +31,7 @@ public class AppointmentActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.appointment);
+        System.out.println("\n\nHEEERE\n");
     }
 
 }

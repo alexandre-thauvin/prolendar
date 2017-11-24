@@ -1,8 +1,12 @@
 package com.prolendar.thauvi_a.prolendar;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -37,7 +41,7 @@ public class FormActivity extends Activity implements
     private String formule;
     private String artisan;
     private Context context = this;
-
+    private static final Utils utils = new Utils();
     public String getJob() {
         return job;
     }
@@ -71,6 +75,7 @@ public class FormActivity extends Activity implements
         super.onCreate(savedInstanceState);
         step = Step.JOB;
         setContentView(R.layout.form);
+        findViewById(R.id.finish).setVisibility(View.GONE);
         findViewById(R.id.done).setOnClickListener(this);
         spinner = findViewById(R.id.spinner);
 
@@ -95,8 +100,7 @@ public class FormActivity extends Activity implements
         } else if (this.step == Step.FORMULE) {
             formule = spinner.getSelectedItem().toString();
             setArtisan();
-        } else
-            artisan = spinner.getSelectedItem().toString();
+        }
     }
 
     public void setJob() {
@@ -144,7 +148,6 @@ public class FormActivity extends Activity implements
                 adapter.setDropDownViewResource(R.layout.multiline_spinner_dropdown_item);
                 spinner.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
-                step = step.FORMULE;
             }
 
             @Override
@@ -167,11 +170,9 @@ public class FormActivity extends Activity implements
         myRef.child(job).child("artisan").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String value = dataSnapshot.getValue().toString();
-                value = value.replaceAll("\\{", "").replaceAll("\\}", "");
-                String tab[] = value.split(", ");
-                for (String stl : tab) {
-                    exp.add(stl);
+                for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
+                    String name = messageSnapshot.child("").child("name").getValue().toString();
+                    exp.add(name);
                 }
                 adapter.setDropDownViewResource(R.layout.multiline_spinner_dropdown_item);
                 spinner.setAdapter(adapter);
@@ -186,5 +187,34 @@ public class FormActivity extends Activity implements
         });
         TextView tv = findViewById(R.id.select);
         tv.setText(getString(R.string.artisan));
+        findViewById(R.id.finish).setVisibility(View.VISIBLE);
+        findViewById(R.id.done).setVisibility(View.GONE);
+    }
+
+    public void toAppointment(View view)
+    {
+        artisan = spinner.getSelectedItem().toString();
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
+        builder.setTitle("Selection")
+                .setMessage(getString(R.string.resum_selection, this.job, this.formule, this.artisan))
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(FormActivity.this, AppointmentActivity.class);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert);
+        AlertDialog dial;
+        dial = builder.create();
+        dial.show();
     }
 }

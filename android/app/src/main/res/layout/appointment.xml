@@ -62,6 +62,18 @@
                 android:gravity="center">
 
 
+                <com.prolendar.thauvi_a.prolendar.MyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="APPOINTMENT ACTIVITY"
+                    android:gravity="center"
+                    android:textColor="#8E8E9A"
+                    android:textSize="50sp"
+                    android:letterSpacing="0.1"
+                    android:layout_marginTop="12dp"/>
+
+
+
             </LinearLayout>
         </LinearLayout>
 

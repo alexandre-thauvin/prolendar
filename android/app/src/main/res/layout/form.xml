@@ -36,7 +36,7 @@
                 android:id="@+id/select"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
+                android:layout_marginStart="100dp"
                 android:text="@string/job"
                 android:gravity="center"
                 android:textColor="#8E8E9A"
@@ -86,6 +86,24 @@
                 android:layout_marginLeft="40dp"
                 android:layout_marginTop="100dp"/>
 
+            <com.prolendar.thauvi_a.prolendar.MyTextView
+                android:id="@+id/finish"
+                android:layout_width="275dp"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:clickable="true"
+                android:onClick="toAppointment"
+                android:text="@string/finish"
+                android:textSize="14sp"
+                android:letterSpacing="0.1"
+                android:textColor="#ececf1"
+                android:background="@drawable/rounded"
+                android:gravity="center"
+                android:padding="17dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="100dp"/>
+
 
 
             <LinearLayout
@@ -97,18 +115,18 @@
                 <Spinner
                     android:id="@+id/spinner"
                     android:layout_width="0dp"
-                    android:layout_height="80dp"
+                    android:layout_height="88dp"
                     android:layout_marginLeft="40dp"
                     android:layout_marginRight="40dp"
+                    android:layout_weight="1"
                     android:background="@drawable/rounded"
                     android:gravity="center"
-                    android:padding="17dp"
                     android:letterSpacing="0.1"
-                    android:textColor="#ececf1"
-                    android:textSize="16sp"
-                    android:spinnerMode="dropdown"
+                    android:padding="17dp"
                     android:popupBackground="#BD071D"
-                    android:layout_weight="1" />
+                    android:spinnerMode="dropdown"
+                    android:textColor="#ececf1"
+                    android:textSize="16sp" />
 
             </LinearLayout>
         </LinearLayout>

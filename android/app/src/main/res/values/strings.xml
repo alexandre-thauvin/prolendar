@@ -43,8 +43,10 @@
     <string name="job">Select a job</string>
     <string name="formule">Select a formule</string>
     <string name="artisan">Select an artisan</string>
+    <string name="finish">finish</string>
 
     <!-- AppointmentActivity -->
     <string name="appointment_activity">AppointmentActivity</string>
+    <string name="resum_selection">You have selected : %s for %s with %s</string>
 
 </resources>
