@@ -14,11 +14,23 @@ import android.os.Bundle;
 
 public class AppointmentActivity extends Activity {
 
+    private String beginTime;
+    private String endTime;
+
+    public String getBeginTime() {
+        return beginTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.calendar);
+        setContentView(R.layout.appointment);
     }
 
 }

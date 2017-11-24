@@ -21,17 +21,14 @@ import com.google.api.services.calendar.model.*;
 import android.Manifest;
 import android.accounts.AccountManager;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -60,6 +57,9 @@ public class CalendarActivity extends Activity
 
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] SCOPES = { CalendarScopes.CALENDAR };
+    private static String location;
+    private static Event fEvent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +76,7 @@ public class CalendarActivity extends Activity
         mCredential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
-        String toto = mCredential.getSelectedAccountName();
-        System.out.println(toto);
+        mCredential.getSelectedAccountName();
     }
 
     private void getResultsFromApi() {
@@ -271,26 +270,9 @@ public class CalendarActivity extends Activity
                 output.add(0, "Data retrieved using the Google Calendar API:");
                 mOutputText.setText(TextUtils.join("\n", output));
             }
-            AlertDialog.Builder builder;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                builder = new AlertDialog.Builder(this.context, android.R.style.Theme_Material_Dialog_Alert);
-            } else {
-                builder = new AlertDialog.Builder(this.context);
-            }
-            builder.setTitle("Event created")
-                    .setMessage("Event added on Google Calendar")
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_alert);
-            AlertDialog dial;
-            dial = builder.create();
-            dial.show();
+            Utils u = new Utils();
+            Context context = CalendarActivity.this;
+            u.displayDialogBox("Event created", getString(R.string.resum_event, fEvent.getSummary(), fEvent.getStart().toString(), fEvent.getLocation()), context);
         }
 
         @Override
@@ -314,17 +296,20 @@ public class CalendarActivity extends Activity
             }
         }
         private void addEvent() {
+        FormActivity form = new FormActivity();
+        AppointmentActivity appointment = new AppointmentActivity();
             Event event = new Event()
-                    .setSummary("RDV piqure")
-                    .setLocation("50 Bis Rue lagrange, 33000 Bordeaux, France");
+                    .setSummary(form.getJob())
+                    .setLocation(location)
+                    .setDescription(form.getFormule() + "with " + form.getArtisan());
 
-            DateTime startDateTime = new DateTime("2017-11-25T10:00:00+01:00");
+            DateTime startDateTime = new DateTime(appointment.getBeginTime()); // format "2017-11-25T10:00:00+01:00"
             EventDateTime start = new EventDateTime()
                     .setDateTime(startDateTime)
                     .setTimeZone("Europe/Paris");
             event.setStart(start);
 
-            DateTime endDateTime = new DateTime("2017-11-25T10:20:00+01:00");
+            DateTime endDateTime = new DateTime(appointment.getEndTime());
             EventDateTime end = new EventDateTime()
                     .setDateTime(endDateTime)
                     .setTimeZone("Europe/Paris");
@@ -333,6 +318,7 @@ public class CalendarActivity extends Activity
 
             try {
                 event = mService.events().insert(calendarId, event).execute();
+                fEvent = event;
             }
             catch (java.io.IOException e)
             {

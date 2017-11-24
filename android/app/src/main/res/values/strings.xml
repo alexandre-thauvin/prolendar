@@ -3,7 +3,7 @@
     <string name="welcome">Welcome back</string>
     <string name="next_page">Click here to access next page</string>
     <string name="id_client">307043464216-gmflaeo1e2abjvg9t08p1a8k5piu40g0.apps.googleusercontent.com</string>
-    <!-- SignIn Activity -->
+    <!-- SignInActivity -->
     <string name="password">Password</string>
     <string name="account">Create account</string>
     <string name="email">E-mail</string>
@@ -24,7 +24,7 @@
     <string name="loading">Loading…</string>
     <string name="signin_activity">SignInActivity</string>
 
-    <!-- Calendar Activity -->
+    <!-- CalendarActivity -->
     <string name="calendar_activity">CalendarActivity</string>
     <string name="auth_code_fmt">Auth Code: %s</string>
     <string name="id_token_fmt">ID Token: %s</string>
@@ -37,9 +37,14 @@
     <string name="request_cancel">Request cancelled.</string>
     <string name="error_occur">The following error occurred:</string>
     <string name="need_contact">Prolendar need that you allow the contact section</string>
-    <!-- Form Activity -->
+    <string name="resum_event">%s on %s at %s</string>
+    <!-- FormActivity -->
     <string name="form_activity">FormActivity</string>
-    <string name="job">Select the job</string>
-    <string name="formule">Select the formule</string>
+    <string name="job">Select a job</string>
+    <string name="formule">Select a formule</string>
+    <string name="artisan">Select an artisan</string>
+
+    <!-- AppointmentActivity -->
+    <string name="appointment_activity">AppointmentActivity</string>
 
 </resources>

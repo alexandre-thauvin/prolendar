@@ -37,6 +37,11 @@
             android:label="@string/form_activity"
             android:theme="@style/AppTheme">
         </activity>
+        <activity
+            android:name="com.prolendar.thauvi_a.prolendar.AppointmentActivity"
+            android:label="@string/appointment_activity"
+            android:theme="@style/AppTheme">
+        </activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAljBlKsqmlAhzDlGNGRzUPYU1_UASsq10"/>

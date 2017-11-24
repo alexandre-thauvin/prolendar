@@ -107,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:focusable="true"
                 android:clickable="true"
-                android:onClick="toCalendar"
+                android:onClick="toForm"
                 android:text="@string/done"
                 android:textSize="14sp"
                 android:letterSpacing="0.1"
