@@ -38,6 +38,7 @@
     <string name="error_occur">The following error occurred:</string>
     <string name="need_contact">Prolendar need that you allow the contact section</string>
     <string name="resum_event">%s on %s at %s</string>
+    <string name="get_location">Get current location</string>
     <!-- FormActivity -->
     <string name="form_activity">FormActivity</string>
     <string name="job">Select a job</string>

@@ -26,13 +26,21 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -54,11 +62,16 @@ public class CalendarActivity extends Activity
     static final int REQUEST_AUTHORIZATION = 1001;
     static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
     static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
+    static final int REQUEST_PERMISSION_ACCESS_FINE_LOCATION = 1004;
 
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] SCOPES = { CalendarScopes.CALENDAR };
-    private static String location;
+    private static List aLocation;
+    private static String fLocation;
     private static Event fEvent;
+    private static Utils utils = new Utils();
+
+
 
 
     @Override
@@ -77,7 +90,81 @@ public class CalendarActivity extends Activity
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
         mCredential.getSelectedAccountName();
+
     }
+
+    public void requestPermissionLocation()
+    {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                utils.displayDialogBox("Need gps", "The application need gps for location", this);
+            } else {
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        REQUEST_PERMISSION_ACCESS_FINE_LOCATION);
+
+            }
+        }
+
+    }
+
+    @SuppressWarnings("ALL")
+    public void getLocation(View view)
+    {
+        Location location;
+        Log.w("location", "PASS HERE");
+        requestPermissionLocation();
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Geocoder geocoder = new Geocoder(CalendarActivity.this);
+        LocationListener locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                Geocoder geocoder = new Geocoder(CalendarActivity.this);
+                try {
+                    Log.w("location", "PASS HERE LOCATION CHANGED");
+                    aLocation = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 3);
+                    Log.w("location", aLocation.get(0).toString());
+                    Log.w("location", aLocation.get(1).toString());
+                    Log.w("location", aLocation.get(2).toString());
+
+                }
+                catch (IOException e)
+                {
+                    Log.w("location", e.getMessage());
+                }
+            }
+
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+            public void onProviderEnabled(String provider) {}
+
+            public void onProviderDisabled(String provider) {}
+        };
+        try {
+            Log.w("location", "PASS HERE REQUEST LOCATION");
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            try {
+                aLocation = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 3);
+            }
+            catch (IOException e)
+            {
+                Log.w("location", e.getMessage());
+            }
+            String result[] = aLocation.get(0).toString().split("],");
+            fLocation = result[0].replaceAll("Address\\[addressLines=\\[0:", "").replaceAll("\\\"", "");
+            utils.displayDialogBox("Location", fLocation, CalendarActivity.this);
+        }
+        catch (SecurityException e) {
+            Log.w("location", e.getMessage());
+        }
+    }
+
+
 
     private void getResultsFromApi() {
         if (! isGooglePlayServicesAvailable()) {
@@ -208,12 +295,10 @@ public class CalendarActivity extends Activity
     private class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
         private com.google.api.services.calendar.Calendar mService = null;
         private Exception mLastError = null;
-        private Context context;
 
         MakeRequestTask(GoogleAccountCredential credential, Context context) {
             HttpTransport transport = AndroidHttp.newCompatibleTransport();
             JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-            this.context = context;
             mService = new com.google.api.services.calendar.Calendar.Builder(
                     transport, jsonFactory, credential)
                     .setApplicationName("Prolendar")
@@ -300,7 +385,7 @@ public class CalendarActivity extends Activity
         AppointmentActivity appointment = new AppointmentActivity();
             Event event = new Event()
                     .setSummary(form.getJob())
-                    .setLocation(location)
+                    .setLocation(fLocation)
                     .setDescription(form.getFormule() + "with " + form.getArtisan());
 
             DateTime startDateTime = new DateTime(appointment.getBeginTime()); // format "2017-11-25T10:00:00+01:00"
@@ -322,7 +407,7 @@ public class CalendarActivity extends Activity
             }
             catch (java.io.IOException e)
             {
-                System.out.printf(e.getMessage());
+                System.out.println(e.getMessage());
             }
         }
     }

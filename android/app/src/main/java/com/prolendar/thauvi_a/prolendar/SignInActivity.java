@@ -33,6 +33,7 @@ public class SignInActivity extends AppCompatActivity implements
     private static final int RC_SIGN_IN = 9001;
 
     private GoogleSignInClient mGoogleSignInClient;
+    private String test;
     private TextView mStatusTextView;
     private FirebaseAuth mAuth;
 

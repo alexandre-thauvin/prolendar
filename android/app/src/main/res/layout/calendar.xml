@@ -47,6 +47,8 @@ android:orientation="vertical"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"/>
+
+
         <ImageView
             android:id="@+id/ic"
             android:layout_width="77dp"
@@ -54,6 +56,24 @@ android:orientation="vertical"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:background="@drawable/ic_launcher" />
+
+        <com.prolendar.thauvi_a.prolendar.MyTextView
+            android:id="@+id/location_button"
+            android:layout_width="275dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/rounded"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:letterSpacing="0.1"
+            android:onClick="getLocation"
+            android:padding="17dp"
+            android:text="@string/get_location"
+            android:textColor="#ececf1"
+            android:textSize="16sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -77,6 +97,8 @@ android:orientation="vertical"
                 android:text="@string/create"
                 android:textColor="#ececf1"
                 android:textSize="16sp" />
+
+
 
         </LinearLayout>
     </LinearLayout>
